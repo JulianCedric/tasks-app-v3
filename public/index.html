@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+  </head>
+  <body>
+    <div class="container-fluid" style="margin-top: 2rem">
+      <div class="row" id="login-form-container" style="display: block">
+        <div class="col-md-offset-4 col-md-4 well text-center">
+          <form id="login-form">
+            <h2>Log in</h2>
+            <div class="form-group">
+              <input class="form-control" id="username" type="text" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" id="password" type="password" placeholder="Password" required>
+            </div>
+            <button class="btn btn-block btn-primary" id="login-btn" type="submit">Log in</button>
+            <hr>
+            <h4>Don't have an account? <a href='#'>Sign up</a></h4>
+          </form>
+        </div>
+      </div>
+      <div class="row" id="new-task-form-container" style="display: none">
+        <div class="col-md-offset-4 col-md-4 well">
+          <form id="new-task-form">
+            <h2 class="text-center">Tasks</h2>
+            <div class="form-group">
+              <input class="form-control" id="new-task" type="text" placeholder="New task">
+            </div>
+            <button class="btn btn-block btn-primary" id="new-task-btn" type="submit">Submit</button>
+          </form>
+          <hr>
+          <div id="tasks-container">
+            <ol id="tasks-ol"></ol>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      let users = [{ id: 1, username: 'user1', password: 'pass1'}];
+      let tasks= [];
+      document.addEventListener('DOMContentLoaded', function(e) {
+        document.getElementById('username').focus();
+      });
+      document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
+
+        for (let i = 0; i < users.length; i++) {
+          if (users[i].username == username && users[i].password == password) {
+            document.getElementById('login-form-container').style.display = 'none';
+            document.getElementById('new-task-form-container').style.display = 'block';
+            document.getElementById('new-task').focus();
+
+            console.log('user logged in');  
+          } else {
+            alert('The username or password you have entered is incorrect. Please try again.');
+            document.getElementById('username').value = "";
+            document.getElementById('password').value = "";
+            document.getElementById('username').focus();
+          };
+        };
+      });
+      document.getElementById('new-task-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let newId = tasks.length + 1;
+        let newTask = document.getElementById('new-task').value;
+        let newObj = { id: newId, desc: newTask};
+        tasks.push(newObj);
+
+        let tasksOl = document.getElementById('tasks-ol');
+        let newTaskLi = document.createElement('li');
+        newTaskLi.innerText = newTask;
+        tasksOl.appendChild(newTaskLi);
+        
+        document.getElementById('new-task').value = "";
+        document.getElementById('new-task').focus();
+
+        console.log('tasks:', tasks);
+      });
+    </script>
+  </body>
+  </html>
